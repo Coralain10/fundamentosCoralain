@@ -24,7 +24,7 @@ void MainGame::init() {
 void MainGame::initLevel() {
 	_levels.push_back(new Level("Levels/level1.txt"));
 	_player = new Player();
-	_player->init(0.1f, _levels[_currenLevel]->getPlayerPosition(), &_inputManager);
+	_player->init(4.f, _levels[_currenLevel]->getPlayerPosition(), &_inputManager);
 	_currenLevel = 0;
 	_spriteBacth.init();
 
@@ -38,6 +38,10 @@ void MainGame::initLevel() {
 			randPosY(randomEngine)* TILE_WIDTH);
 		_humans.back()->init(1.0f, pos);
 	}
+	for (glm::vec2 z : _levels[_currenLevel]->getZombiesPosition()) {
+		_zombies.push_back(new Zombie());
+		_zombies.back()->init(1.0f, z);
+	};
 }
 
 void MainGame::initShaders() {
@@ -73,6 +77,7 @@ void MainGame::draw() {
 	{
 		_humans[i]->draw(_spriteBacth);
 	}
+	for (Zombie *z : _zombies) z->draw(_spriteBacth);
 	_spriteBacth.end();
 	_spriteBacth.renderBatch();
 
